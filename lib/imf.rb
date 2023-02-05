@@ -16,16 +16,17 @@ module IMF
     IMF::Stakeholder::ClientPerson.new name, contacts
   end
 
+  # @param [String] id identifier for this stage
   # @param [Array(Stage)] dependencies
   # @param [Task::Template] task_template
   # @param [boolean] multitask
-  def build_stage_template(dependencies, task_template, multitask)
-    IMF::Process::Stage::Template.new dependencies, task_template, multitask
+  def build_stage_template(id, dependencies, task_template, multitask)
+    IMF::Process::Stage::Template.new id, dependencies, task_template, multitask
   end
 
-  # @params [Array(Stage)] stages
+  # @params [Array(IMF::Process::Stage::Template)] stages
   def build_process_template(stages)
-    IMF::Process::Template.new stages
+    IMF::Process::Template.new stages:
   end
 
   # The allowed values for each "data section" are as follow:
@@ -57,6 +58,7 @@ module IMF
   end
 end
 
+require_relative './imf/monkeypatches'
 require_relative './imf/stakeholder'
 require_relative './imf/task'
 require_relative './imf/process'
