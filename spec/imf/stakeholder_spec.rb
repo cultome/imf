@@ -1,5 +1,4 @@
 RSpec.describe IMF::Stakeholder do
-
   it 'instance a client' do
     email = IMF.build_email_contact 'test@example.com'
     client = IMF.build_client 'Tester', [email]
