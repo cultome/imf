@@ -1,8 +1,9 @@
 class IMF::Process::Template
-  attr_reader :stages
+  attr_reader :id, :stages
 
   # @params [Array(IMF::Process::Stage::Template)] stages
-  def initialize(stages:)
+  def initialize(id:, stages:)
+    @id = id
     @stages = stages
   end
 
@@ -19,13 +20,16 @@ class IMF::Process::Template
         dependencies: t_stage.dependencies,
       )
 
+      extra_data = { stage:, process:, id: SecureRandom.uuid }
       i_stage = input_stages.fetch(t_stage.id, [])
 
       if i_stage.empty?
-        t_stage.task_template.materialize
+        t_stage.task_template.materialize extra_data
       else
         i_stage.map do |task_data|
-          t_stage.task_template.materialize task_data.merge(stage:, process:)
+          extra_data.delete(:id) if task_data.key?(:id)
+
+          t_stage.task_template.materialize task_data.merge(extra_data)
         end
       end
     end

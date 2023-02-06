@@ -8,14 +8,20 @@ module IMF
   extend self
 
   # @param [String] email
-  def build_email_contact(email)
-    IMF::Stakeholder::EmailContact.new email
+  def build_email_contact(email, id: nil)
+    IMF::Stakeholder::EmailContact.new(
+      id: id.nil? ? SecureRandom.uuid : id,
+      value: email
+    )
   end
 
   # @param [String] name
   # @param [Array(Contact)] name
-  def build_client(name, contacts)
-    IMF::Stakeholder::ClientPerson.new name, contacts
+  def build_client(name, contacts, id: nil)
+    IMF::Stakeholder::ClientPerson.new(
+      id: id.nil? ? SecureRandom.uuid : id,
+      name:, contacts:
+    )
   end
 
   # @param [String] id identifier for this stage
@@ -27,8 +33,11 @@ module IMF
   end
 
   # @params [Array(IMF::Process::Stage::Template)] stages
-  def build_process_template(stages)
-    IMF::Process::Template.new stages:
+  def build_process_template(stages, id: nil)
+    IMF::Process::Template.new(
+      id: id.nil? ? SecureRandom.uuid : id,
+      stages:
+    )
   end
 
   # The allowed values for each "data section" are as follow:
@@ -43,6 +52,7 @@ module IMF
   # @param [Array(Const)] costs
   # @param [Array(Stakeholder)] assignees
   def build_task_template(
+    id: nil,
     requirements: nil,
     constraints: nil,
     stakeholders: nil,
@@ -50,6 +60,7 @@ module IMF
     costs: nil,
     assignees: nil)
     IMF::Task::Template.new(
+      id: id.nil? ? SecureRandom.uuid : id,
       requirements:,
       constraints:,
       stakeholders:,
@@ -58,6 +69,10 @@ module IMF
       assignees:
     )
   end
+
+  def stage_completed?(*stages)
+    false
+  end
 end
 
 require_relative './imf/monkeypatches'
@@ -65,3 +80,4 @@ require_relative './imf/event'
 require_relative './imf/stakeholder'
 require_relative './imf/task'
 require_relative './imf/process'
+require_relative './imf/store'

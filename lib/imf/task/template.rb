@@ -1,5 +1,5 @@
 class IMF::Task::Template
-  attr_reader :requirements, :constraints, :stakeholders, :objectives, :costs, :assignees, :transitions
+  attr_reader :id, :requirements, :constraints, :stakeholders, :objectives, :costs, :assignees, :transitions
 
   # The allowed values for each "data section" are as follow:
   # nil: the section wont be available (none)
@@ -7,6 +7,7 @@ class IMF::Task::Template
   # instance: the section is available but not editable (fixed)
   # empty array: error
   #
+  # @param [String] id
   # @param [Array(Requirement)] requirements
   # @param [Array(Constraint)] constraints
   # @param [Array(Stakeholder)] stakeholders
@@ -15,6 +16,7 @@ class IMF::Task::Template
   # @param [Array(Stakeholder)] assignees
   # @param [IMF::Task::EventTransitions] transitions
   def initialize(
+    id:,
     requirements: nil,
     constraints: nil,
     stakeholders: nil,
@@ -23,7 +25,7 @@ class IMF::Task::Template
     assignees: nil,
     transitions: IMF::Task::EventTransitions::Basic
   )
-
+    @id = id
     @transitions = transitions
 
     check_param! requirements, 'Requirements'
@@ -82,6 +84,7 @@ class IMF::Task::Template
 
     non_section_props = data.select { |k, v| !section_names.include? k }
     non_section_props[:transitions] = @transitions unless non_section_props.key?(:transitions)
+    non_section_props[:id] = SecureRandom.uuid unless non_section_props.key?(:id)
 
     IMF::Task::Base.new(**task_params.merge(non_section_props))
   end
@@ -90,6 +93,9 @@ class IMF::Task::Template
 
   def materialize_section(section_name, data)
     class_name = "IMF::Task::#{section_name.to_singular.to_pascalcase}::#{data[:type].to_pascalcase}"
+
+    data[:params][:id] = SecureRandom.uuid if data.dig(:params, :id).nil?
+
     Object.const_get(class_name).new(**data[:params])
   end
 

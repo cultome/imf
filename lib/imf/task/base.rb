@@ -1,5 +1,5 @@
 class IMF::Task::Base
-  attr_reader :status, :process, :stage, :transitions, :requirements, :constraints, :stakeholders, :objectives, :costs, :assignees
+  attr_reader :id, :status, :process, :stage, :transitions, :requirements, :constraints, :stakeholders, :objectives, :costs, :assignees
 
   # The allowed values for each "data section" are as follow:
   # nil: the section wont be available (none)
@@ -7,6 +7,7 @@ class IMF::Task::Base
   # instance: the section is available but not editable (fixed)
   # empty array: error
   #
+  # @param [String] id
   # @param [String] status
   # @param [IMF::Process::Stage::Base] stage
   # @param [IMF::Process::Base] process
@@ -18,6 +19,7 @@ class IMF::Task::Base
   # @param [Array(Const)] costs
   # @param [Array(Stakeholder)] assignees
   def initialize(
+    id:,
     status: 'created',
     stage: nil,
     process: nil,
@@ -30,6 +32,7 @@ class IMF::Task::Base
     assignees: nil
   )
 
+    @id = id
     @status = status
     @stage = stage
     @process = process
@@ -52,6 +55,8 @@ class IMF::Task::Base
 
   # @param [IMF::Event] event
   def apply(event)
+    check_dependencies!
+
     new_status = transitions.dig(status, event.name)
     # if nil, try the catch-all
     new_status = transitions.dig(status, '*') if new_status.nil?
@@ -62,6 +67,14 @@ class IMF::Task::Base
   end
 
   private
+
+  def check_dependencies!
+    return if stage.nil? || stage.dependencies.empty?
+
+    unless IMF.stage_completed?(*stage.dependencies)
+      raise "Dependencies not completed: #{stage.dependencies}"
+    end
+  end
 
   def check_param!(value, name)
     raise "#{name} list cannot be empty" if !value.nil? && value.empty?

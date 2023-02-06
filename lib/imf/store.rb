@@ -1,0 +1,2 @@
+module IMF::Store
+end

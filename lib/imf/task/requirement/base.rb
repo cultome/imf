@@ -1,4 +1,10 @@
 class IMF::Task::Requirement::Base
+  attr_reader :id
+
+  def initialize(id:)
+    @id = id
+  end
+
   def self.as_type
     @as_type ||= name.
       split('::').

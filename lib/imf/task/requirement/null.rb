@@ -4,7 +4,9 @@ end
 class IMF::Task::Requirement::NullTwo < IMF::Task::Requirement::Base
   attr_reader :val1, :val2
 
-  def initialize(val1:, val2:)
+  def initialize(id:, val1:, val2:)
+    super id:
+
     @val1 = val1
     @val2 = val2
   end

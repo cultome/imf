@@ -3,7 +3,7 @@ RSpec.describe IMF::Process do
     task_templ_1 = IMF.build_task_template(
       requirements: [
         IMF::Task::Requirement::NullOne,
-        IMF::Task::Requirement::NullTwo.new(val1: 1, val2: 2),
+        IMF::Task::Requirement::NullTwo.new(id: '100', val1: 1, val2: 2),
       ],
     )
     task_templ_2 = IMF.build_task_template(
@@ -17,8 +17,8 @@ RSpec.describe IMF::Process do
   end
 
   let(:process_template_full) do
-    task_templ_1 = IMF.build_task_template(requirements: [IMF::Task::Requirement::NullOne.new])
-    task_templ_2 = IMF.build_task_template(requirements: [IMF::Task::Requirement::NullTwo.new(val1: 7, val2: 8)])
+    task_templ_1 = IMF.build_task_template(requirements: [IMF::Task::Requirement::NullOne.new(id: '200')])
+    task_templ_2 = IMF.build_task_template(requirements: [IMF::Task::Requirement::NullTwo.new(id: '101', val1: 7, val2: 8)])
 
     stage_1 = IMF.build_stage_template 'first', [], task_templ_1, false
     stage_2 = IMF.build_stage_template 'last', ['first'], task_templ_2, false
@@ -80,5 +80,20 @@ RSpec.describe IMF::Process do
 
       expect { process_template_full.materialize(params) }.to raise_error error_msg
     end
+  end
+
+  it 'check stage-dependencies when applying events' do
+    start_evt = IMF::Event::StartTask.new
+
+    one, two = process_template_full.materialize
+
+    expect(one.status).to eq 'created'
+    expect(two.status).to eq 'created'
+
+    one.apply(start_evt)
+    two.apply(start_evt)
+
+    expect(one.status).to eq 'started'
+    expect(two.status).to eq 'created'
   end
 end

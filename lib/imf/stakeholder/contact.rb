@@ -1,10 +1,11 @@
 # Base class for contacts informations (means of communication).
 # Specialized classes will overwrite the methods defined in here
 class IMF::Stakeholder::Contact
-  attr_reader :value
+  attr_reader :id, :value
 
   # @param [String] value
-  def initialize(value)
+  def initialize(id:, value:)
+    @id = id
     @value = value
   end
 end

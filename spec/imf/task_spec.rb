@@ -1,6 +1,6 @@
 RSpec.describe IMF::Task do
   let(:template) do
-    IMF.build_task_template(requirements: [IMF::Task::Requirement::NullOne.new])
+    IMF.build_task_template(requirements: [IMF::Task::Requirement::NullOne.new(id: '300')])
   end
 
   let(:task) { template.materialize }
