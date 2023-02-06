@@ -1,5 +1,5 @@
 class IMF::Task::Template
-  attr_reader :requirements, :constraints, :stakeholders, :objectives, :costs, :assignees
+  attr_reader :requirements, :constraints, :stakeholders, :objectives, :costs, :assignees, :transitions
 
   # The allowed values for each "data section" are as follow:
   # nil: the section wont be available (none)
@@ -13,13 +13,18 @@ class IMF::Task::Template
   # @param [Array(Objective)] objectives
   # @param [Array(Const)] costs
   # @param [Array(Stakeholder)] assignees
+  # @param [IMF::Task::EventTransitions] transitions
   def initialize(
     requirements: nil,
     constraints: nil,
     stakeholders: nil,
     objectives: nil,
     costs: nil,
-    assignees: nil)
+    assignees: nil,
+    transitions: IMF::Task::EventTransitions::Basic
+  )
+
+    @transitions = transitions
 
     check_param! requirements, 'Requirements'
     check_param! constraints, 'Constraints'
@@ -76,6 +81,8 @@ class IMF::Task::Template
     end
 
     non_section_props = data.select { |k, v| !section_names.include? k }
+    non_section_props[:transitions] = @transitions unless non_section_props.key?(:transitions)
+
     IMF::Task::Base.new(**task_params.merge(non_section_props))
   end
 

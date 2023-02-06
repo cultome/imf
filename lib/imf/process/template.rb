@@ -11,6 +11,8 @@ class IMF::Process::Template
   # @param [Hash(String, Hash(#to_s, *))] input_stages values to build tasks in each stage
   # @return [Array(IMF::Task::Base)]
   def materialize(input_stages = {})
+    process = IMF::Process::Base.new id: SecureRandom.uuid
+
     stages.flat_map do |t_stage|
       stage = IMF::Process::Stage::Base.new(
         id: t_stage.id,
@@ -23,7 +25,7 @@ class IMF::Process::Template
         t_stage.task_template.materialize
       else
         i_stage.map do |task_data|
-          t_stage.task_template.materialize task_data.merge(stage: stage)
+          t_stage.task_template.materialize task_data.merge(stage:, process:)
         end
       end
     end

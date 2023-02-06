@@ -55,6 +55,8 @@ RSpec.describe IMF::Process do
       )
 
       expect(tasks.size).to eq 3
+      expect(tasks.first.stage).not_to be_nil
+      expect(tasks.first.process).not_to be_nil
     end
 
     it 'omitting data correctly' do
@@ -66,7 +68,7 @@ RSpec.describe IMF::Process do
 
       error_msg = 'Not allowed to overwrite a fixed section [requirements] with [{:type=>"null_one", :params=>{}}]'
 
-      expect{ process_template_full.materialize(params) }.to raise_error error_msg
+      expect { process_template_full.materialize(params) }.to raise_error error_msg
     end
 
     it 'wont overwrite a closed section' do
@@ -76,9 +78,7 @@ RSpec.describe IMF::Process do
 
       error_msg = 'Not allowed to overwrite a closed section: costs'
 
-      expect{ process_template_full.materialize(params) }.to raise_error error_msg
+      expect { process_template_full.materialize(params) }.to raise_error error_msg
     end
   end
-
-  it 'add a task to a process stage'
 end

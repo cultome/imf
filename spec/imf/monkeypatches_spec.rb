@@ -7,6 +7,10 @@ RSpec.describe 'Monkeypatches' do
     it '#to_singular' do
       expect('perros'.to_singular).to eq 'perro'
     end
+
+    it '#to_camelcase' do
+      expect('UnoDosTres'.to_camelcase).to eq 'uno_dos_tres'
+    end
   end
 
   context Symbol do
@@ -16,6 +20,10 @@ RSpec.describe 'Monkeypatches' do
 
     it '#to_singular' do
       expect(:perros.to_singular).to eq 'perro'
+    end
+
+    it '#to_camelcase' do
+      expect(:unoDosTres.to_camelcase).to eq 'uno_dos_tres'
     end
   end
 end

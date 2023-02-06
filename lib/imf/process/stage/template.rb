@@ -5,7 +5,7 @@ class IMF::Process::Stage::Template
   # @param [Array(String)] dependencies id of the dependencies stages
   # @param [Task::Template] task_template
   # @param [boolean] multitask
-  def initialize(id, dependencies, task_template, multitask)
+  def initialize(id:, dependencies:, task_template:, multitask:)
     @id = id
     @dependencies = dependencies
     @task_template = task_template

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'securerandom'
+require 'json'
 require_relative 'imf/version'
 
 module IMF
@@ -21,7 +23,7 @@ module IMF
   # @param [Task::Template] task_template
   # @param [boolean] multitask
   def build_stage_template(id, dependencies, task_template, multitask)
-    IMF::Process::Stage::Template.new id, dependencies, task_template, multitask
+    IMF::Process::Stage::Template.new id:, dependencies:, task_template:, multitask:
   end
 
   # @params [Array(IMF::Process::Stage::Template)] stages
@@ -59,6 +61,7 @@ module IMF
 end
 
 require_relative './imf/monkeypatches'
+require_relative './imf/event'
 require_relative './imf/stakeholder'
 require_relative './imf/task'
 require_relative './imf/process'
