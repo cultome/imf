@@ -84,6 +84,7 @@ RSpec.describe IMF::Process do
 
   it 'check stage-dependencies when applying events' do
     start_evt = IMF::Event::StartTask.new
+    complete_evt = IMF::Event::CompleteSuccess.new
 
     one, two = process_template_full.materialize
 
@@ -91,9 +92,22 @@ RSpec.describe IMF::Process do
     expect(two.status).to eq 'created'
 
     one.apply(start_evt)
-    two.apply(start_evt)
+    expect{ two.apply(start_evt) }.to raise_error "Dependencies not completed: [\"first\"]"
 
     expect(one.status).to eq 'started'
     expect(two.status).to eq 'created'
+
+    one.apply(complete_evt)
+    two.apply(complete_evt) # do nothing because wrong event in given moment
+
+    expect(one.status).to eq 'completed_succeeded'
+    expect(two.status).to eq 'created'
+
+    # correct sequence with dependencies solved
+    two.apply(start_evt)
+    expect(two.status).to eq 'started'
+
+    two.apply(complete_evt)
+    expect(two.status).to eq 'completed_succeeded'
   end
 end

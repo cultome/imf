@@ -53,6 +53,10 @@ class IMF::Task::Base
     @assignees = assignees
   end
 
+  def completed?
+    transitions.dig(status, '_final?')
+  end
+
   # @param [IMF::Event] event
   def apply(event)
     check_dependencies!
@@ -71,9 +75,11 @@ class IMF::Task::Base
   def check_dependencies!
     return if stage.nil? || stage.dependencies.empty?
 
-    unless IMF.stage_completed?(*stage.dependencies)
-      raise "Dependencies not completed: #{stage.dependencies}"
-    end
+    dependencies_completed = process.tasks
+      .select { |task| stage.dependencies.include? task.stage.id }
+      .all?(&:completed?)
+
+    raise "Dependencies not completed: #{stage.dependencies}" unless dependencies_completed
   end
 
   def check_param!(value, name)

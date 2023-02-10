@@ -69,10 +69,6 @@ module IMF
       assignees:
     )
   end
-
-  def stage_completed?(*stages)
-    false
-  end
 end
 
 require_relative './imf/monkeypatches'

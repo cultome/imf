@@ -14,7 +14,7 @@ class IMF::Process::Template
   def materialize(input_stages = {})
     process = IMF::Process::Base.new id: SecureRandom.uuid
 
-    stages.flat_map do |t_stage|
+    tasks = stages.flat_map do |t_stage|
       stage = IMF::Process::Stage::Base.new(
         id: t_stage.id,
         dependencies: t_stage.dependencies,
@@ -33,5 +33,9 @@ class IMF::Process::Template
         end
       end
     end
+
+    process.tasks = tasks
+
+    tasks
   end
 end
