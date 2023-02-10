@@ -73,6 +73,10 @@ end
 
 require_relative './imf/monkeypatches'
 require_relative './imf/event'
+require_relative './imf/cost'
+require_relative './imf/objective'
+require_relative './imf/constraint'
+require_relative './imf/requirement'
 require_relative './imf/stakeholder'
 require_relative './imf/task'
 require_relative './imf/process'

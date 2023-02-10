@@ -1,0 +1,2 @@
+module IMF::Objective
+end

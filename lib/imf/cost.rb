@@ -1,0 +1,2 @@
+module IMF::Cost
+end

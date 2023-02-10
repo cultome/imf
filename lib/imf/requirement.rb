@@ -1,0 +1,2 @@
+module IMF::Requirement
+end

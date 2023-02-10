@@ -12,12 +12,12 @@ class IMF::Task::Base
   # @param [IMF::Process::Stage::Base] stage
   # @param [IMF::Process::Base] process
   # @param [IMF::Task::EventTransitions] transitions
-  # @param [Array(Requirement)] requirements
-  # @param [Array(Constraint)] constraints
-  # @param [Array(Stakeholder)] stakeholders
-  # @param [Array(Objective)] objectives
-  # @param [Array(Const)] costs
-  # @param [Array(Stakeholder)] assignees
+  # @param [Array(IMF::Requirement)] requirements
+  # @param [Array(IMF::Constraint)] constraints
+  # @param [Array(IMF::Stakeholder)] stakeholders
+  # @param [Array(IMF::Objective)] objectives
+  # @param [Array(IMF::Cost)] costs
+  # @param [Array(IMF::Stakeholder)] assignees
   def initialize(
     id:,
     status: 'created',
