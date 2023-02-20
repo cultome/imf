@@ -9,7 +9,7 @@ module IMF
 
   # @param [String] email
   def build_email_contact(email, id: nil)
-    IMF::Stakeholder::EmailContact.new(
+    IMF::Task::Stakeholder::EmailContact.new(
       id: id.nil? ? SecureRandom.uuid : id,
       value: email
     )
@@ -18,7 +18,7 @@ module IMF
   # @param [String] name
   # @param [Array(Contact)] name
   def build_client(name, contacts, id: nil)
-    IMF::Stakeholder::ClientPerson.new(
+    IMF::Task::Stakeholder::Client.new(
       id: id.nil? ? SecureRandom.uuid : id,
       name:, contacts:
     )
@@ -73,11 +73,6 @@ end
 
 require_relative './imf/monkeypatches'
 require_relative './imf/event'
-require_relative './imf/cost'
-require_relative './imf/objective'
-require_relative './imf/constraint'
-require_relative './imf/requirement'
-require_relative './imf/stakeholder'
 require_relative './imf/task'
 require_relative './imf/process'
 require_relative './imf/store'

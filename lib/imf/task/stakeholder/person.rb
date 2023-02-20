@@ -1,5 +1,5 @@
 # Base class for stakeholders. Specialized classes will overwrite the methods defined in here
-class IMF::Stakeholder::Person
+class IMF::Task::Stakeholder::Person
   attr_reader :id, :name, :contacts, :external
 
   # @param [String] name

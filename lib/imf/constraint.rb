@@ -1,2 +1,0 @@
-module IMF::Constraint
-end
