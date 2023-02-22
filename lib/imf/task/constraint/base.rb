@@ -1,4 +1,4 @@
-class IMF::Task::Requirement::Base
+class IMF::Task::Constraint::Base
   include IMF::Role::Typeable
 
   attr_reader :id

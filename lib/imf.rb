@@ -72,6 +72,7 @@ module IMF
 end
 
 require_relative './imf/monkeypatches'
+require_relative './imf/role'
 require_relative './imf/event'
 require_relative './imf/task'
 require_relative './imf/process'
