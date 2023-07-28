@@ -92,7 +92,7 @@ RSpec.describe IMF::Process do
     expect(two.status).to eq 'created'
 
     one.apply(start_evt)
-    expect{ two.apply(start_evt) }.to raise_error "Dependencies not completed: [\"first\"]"
+    expect{ two.apply(start_evt) }.to raise_error 'Dependencies not completed: ["first"]'
 
     expect(one.status).to eq 'started'
     expect(two.status).to eq 'created'
